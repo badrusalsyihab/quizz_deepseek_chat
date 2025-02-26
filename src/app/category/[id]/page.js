@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import Image from 'next/image';
 
 export default function Category() {
 
@@ -94,7 +94,7 @@ export default function Category() {
                             className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
                         >
                             {/* Gambar Kategori */}
-                            <img
+                            <Image
                                 src={category.image}
                                 alt={category.name}
                                 className="w-full h-48 object-cover"
