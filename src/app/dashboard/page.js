@@ -117,7 +117,7 @@ export default function Dashboard() {
     return (
         <>
             <div className="container mx-auto p-6">
-                <div className="text-3xl font-bold text-gray-800">Hi {getUser.username}, Selamat datang di QuizApps</div>
+                <div className="text-3xl font-bold text-gray-800">Hi {getUser ? getUser?.username : ''}, Selamat datang di QuizApps</div>
                 {/* <div className="text-xl font-bold text-gray-800 mb-8">Kamu sekrang berada di {getUser.kelas_name}</div> */}
                 <div className="text-md font-bold text-gray-800 mb-8">Ayo mulia dan ambil sertifikat mu sekarang dengan menjawab soal quizz</div>
 
@@ -129,7 +129,7 @@ export default function Dashboard() {
                         <p className="text-4xl font-bold text-blue-600">{category.length}</p>
                         <div className="mt-4">
                             <button
-                                onClick={() => router.push(`/category/${getUser.kelas_id}`)}
+                                onClick={() => router.push(`/category/${getUser ? getUser?.kelas_id : ''}`)}
                                 className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                                 Pilih Quiz
