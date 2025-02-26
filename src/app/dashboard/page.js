@@ -10,22 +10,34 @@ export default function Dashboard() {
     const [category, setCategory] = useState([]);
     const [isResult, setResult] = useState([]);
     const [isResultWithLimit, setResultWithLimit] = useState([]);
-    const getUser = useState(JSON.parse(localStorage.getItem('user')));
+    const [getUser, setUser] = useState(null);
 
 
     useEffect(() => {
-        const fetchResult = async () => {
-            try {
-                const response = await fetch(`/api/results?user_id=${getUser.id}`);
-                const data = await response.json();
-                setResult(data);
-            } catch (error) {
-                console.error('Error fetching questions:', error);
-            }
-        };
-
-        fetchResult();
+        // Cek apakah pengguna sudah login
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            router.push('/login'); // Redirect ke login jika belum login
+        } else {
+            setUser(user);
+        }
     }, [router]);
+
+    useEffect(() => {
+        if (getUser) {
+            const fetchResult = async () => {
+                try {
+                    const response = await fetch(`/api/results?user_id=${getUser.id}`);
+                    const data = await response.json();
+                    setResult(data);
+                } catch (error) {
+                    console.error('Error fetching questions:', error);
+                }
+            };
+
+            fetchResult();
+        }
+    }, [router, getUser]);
 
 
     useEffect(() => {
@@ -71,13 +83,7 @@ export default function Dashboard() {
         fetchKelas();
     }, [router]);
 
-    useEffect(() => {
-        // Cek apakah pengguna sudah login
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (!user) {
-            router.push('/login'); // Redirect ke login jika belum login
-        }
-    }, [router]);
+
 
 
     const calculateDaysAgo = (date) => {
