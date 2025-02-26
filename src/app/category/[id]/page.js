@@ -1,14 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Breadcrumb from '@/components/Breadcrumb'; // Adjust the path as necessary
 import { useRouter } from 'next/navigation';
-import { use } from 'react';
+
 
 export default function Category({ params }) {
-    const { id } = use(params);
+
     const router = useRouter();
     const [categories, setCategories] = useState([]);
-    const [getUser, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const getUser = useState(JSON.parse(localStorage.getItem('user')));
 
     // Ambil data kategori dari API
     useEffect(() => {

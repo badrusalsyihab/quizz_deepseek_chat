@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function Dashboard() {
     const router = useRouter();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, setKelas] = useState([]);
     const [category, setCategory] = useState([]);
     const [isResult, setResult] = useState([]);
