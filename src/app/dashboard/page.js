@@ -59,6 +59,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         if (!getUser) return;
+
         const fetchCategory = async () => {
             try {
                 const response = await fetch(`/api/categories?kelas_id=${getUser.kelas_id}`);
@@ -70,7 +71,7 @@ export default function Dashboard() {
         };
 
         fetchCategory();
-    }, [router]);
+    }, [router, getUser]);
 
     useEffect(() => {
         const fetchKelas = async () => {
