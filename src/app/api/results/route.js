@@ -1,5 +1,4 @@
 // app/api/results/route.js
-import { group } from 'console';
 import { createPool } from 'mysql2/promise';
 
 export async function POST(request) {
