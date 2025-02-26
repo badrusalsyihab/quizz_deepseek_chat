@@ -12,7 +12,6 @@ export default function Dashboard() {
     const [isResultWithLimit, setResultWithLimit] = useState([]);
     const [getUser, setUser] = useState(null);
 
-
     useEffect(() => {
         // Cek apakah pengguna sudah login
         const user = JSON.parse(localStorage.getItem('user'));
@@ -41,18 +40,21 @@ export default function Dashboard() {
 
 
     useEffect(() => {
-        const fetchResultWithLimit = async () => {
-            try {
-                const response = await fetch(`/api/results?user_id=${getUser.id}&limit=5`);
-                const data = await response.json();
-                setResultWithLimit(data);
-            } catch (error) {
-                console.error('Error fetching questions:', error);
-            }
-        };
+        if (getUser) {
+            const fetchResultWithLimit = async () => {
+                try {
+                    const response = await fetch(`/api/results?user_id=${getUser.id}&limit=5`);
+                    const data = await response.json();
+                    console.log('fetchResultWithLimit', data);
+                    setResultWithLimit(data);
+                } catch (error) {
+                    console.error('Error fetching questions:', error);
+                }
+            };
 
-        fetchResultWithLimit();
-    }, [router]);
+            fetchResultWithLimit();
+        }
+    }, [router, getUser]);
 
 
     useEffect(() => {
@@ -83,9 +85,6 @@ export default function Dashboard() {
         fetchKelas();
     }, [router]);
 
-
-
-
     const calculateDaysAgo = (date) => {
         const currentDate = new Date();
         const createdAtDate = new Date(date);
@@ -93,7 +92,6 @@ export default function Dashboard() {
         const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
         return differenceInDays;
     };
-
 
     // Group results by category_id
     const groupedResults = isResult.reduce((acc, item) => {

@@ -7,10 +7,23 @@ export default function Category() {
 
     const router = useRouter();
     const [categories, setCategories] = useState([]);
-    const getUser = useState(JSON.parse(localStorage.getItem('user')));
+    // const getUser = useState(JSON.parse(localStorage.getItem('user')));
+    const [getUser, setUser] = useState(null);
+
+    useEffect(() => {
+        // Cek apakah pengguna sudah login
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            router.push('/login'); // Redirect ke login jika belum login
+        } else {
+            setUser(user);
+        }
+    }, [router]);
 
     // Ambil data kategori dari API
     useEffect(() => {
+        if (!getUser) return;
+
         const fetchCategories = async () => {
             try {
                 const response = await fetch(`/api/categories?kelas_id=${getUser.kelas_id}`);
@@ -22,7 +35,7 @@ export default function Category() {
         };
 
         fetchCategories();
-    }, []);
+    }, [router, getUser]);
 
     const handleStartQuiz = (categoryId) => {
         router.push(`/quiz/${categoryId}`);

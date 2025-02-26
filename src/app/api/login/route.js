@@ -45,7 +45,6 @@ export async function POST(request) {
         }
 
         // Jika login berhasil, kembalikan data pengguna (tanpa password)
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { password: _, ...userData } = user;
         return new Response(JSON.stringify(userData), {
             headers: { 'Content-Type': 'application/json' },
