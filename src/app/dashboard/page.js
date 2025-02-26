@@ -1,16 +1,16 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Navbar from '../../components/Navbar';
+
 
 export default function Dashboard() {
     const router = useRouter();
-    const [kelas, setKelas] = useState([]);
+    const [_, setKelas] = useState([]);
     const [category, setCategory] = useState([]);
     const [isResult, setResult] = useState([]);
     const [isResultWithLimit, setResultWithLimit] = useState([]);
-    const [getUser, setUser] = useState(JSON.parse(localStorage.getItem('user')));
-    const [completeResult, setCompleteResult] = useState([]);
+    const getUser = useState(JSON.parse(localStorage.getItem('user')));
+
 
     useEffect(() => {
         const fetchResult = async () => {

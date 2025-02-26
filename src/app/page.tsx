@@ -1,6 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function Home() {
   const router = useRouter();
@@ -49,7 +50,7 @@ export default function Home() {
 
           {/* Image Section */}
           <div className="md:w-1/2">
-            <img
+            <Image
               src="https://placehold.in/300x200" // Ganti dengan gambar yang sesuai
               width={500}
               height={400}
