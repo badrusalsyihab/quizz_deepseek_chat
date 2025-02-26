@@ -1,0 +1,159 @@
+-- --------------------------------------------------------
+-- Host:                         127.0.0.1
+-- Server version:               8.0.30 - MySQL Community Server - GPL
+-- Server OS:                    Win64
+-- HeidiSQL Version:             12.1.0.6537
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+-- Dumping database structure for freedb_quiz_deepseek
+-- DROP DATABASE IF EXISTS `freedb_quiz_deepseek`;
+CREATE DATABASE IF NOT EXISTS `freedb_quiz_deepseek` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `freedb_quiz_deepseek`;
+
+-- Dumping structure for table freedb_quiz_deepseek.categories
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `image` varchar(255) DEFAULT NULL,
+  `slug` varchar(50) DEFAULT NULL,
+  `kelas_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table freedb_quiz_deepseek.categories: ~8 rows (approximately)
+INSERT INTO `categories` (`id`, `name`, `description`, `image`, `slug`, `kelas_id`) VALUES
+	(1, 'Matematika', 'Matematika dasar 1 SD', 'https://placehold.in/300x200', 'Matematika', 1),
+	(2, 'Bahasa Indonesia', 'Bahasa Indonesia dasar 1 SD', 'https://placehold.in/300x200', 'Bahasa-Indonesia', 1),
+	(3, 'IPA', 'IPA dasar 1 SD', 'https://placehold.in/300x200', 'IPA', 1),
+	(4, 'IPS', 'IPS dasar 1 SD', 'https://placehold.in/300x200', 'IPS', 1),
+	(5, 'Seni Budaya', 'Seni Budaya dasar 1 SD', 'https://placehold.in/300x200', 'Seni-Budaya', 1),
+	(6, 'Pendidikan Agama', 'Pendidikan Agama dasar 1 SD', 'https://placehold.in/300x200', 'Pendidikan-Agama', 1),
+	(9, 'History', 'Dive into historical events.', 'https://placehold.in/300x200', 'History', 2),
+	(10, 'Technology', 'Stay updated with tech trends.', 'https://placehold.in/300x200', 'Technology', 2);
+
+-- Dumping structure for table freedb_quiz_deepseek.kelas
+DROP TABLE IF EXISTS `kelas`;
+CREATE TABLE IF NOT EXISTS `kelas` (
+  `id` int DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table freedb_quiz_deepseek.kelas: ~2 rows (approximately)
+INSERT INTO `kelas` (`id`, `name`, `created_at`) VALUES
+	(1, 'kelas 1 sd', '2025-02-20 16:52:51'),
+	(2, 'kelas 1 smp', '2025-02-20 16:52:51');
+
+-- Dumping structure for table freedb_quiz_deepseek.questions
+DROP TABLE IF EXISTS `questions`;
+CREATE TABLE IF NOT EXISTS `questions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `category_id` int NOT NULL,
+  `question` text NOT NULL,
+  `option1` varchar(255) NOT NULL,
+  `option2` varchar(255) NOT NULL,
+  `option3` varchar(255) NOT NULL,
+  `option4` varchar(255) NOT NULL,
+  `answer` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table freedb_quiz_deepseek.questions: ~30 rows (approximately)
+INSERT INTO `questions` (`id`, `category_id`, `question`, `option1`, `option2`, `option3`, `option4`, `answer`) VALUES
+	(6, 1, 'Ada 3 apel di meja. Ibu menambahkan 2 apel lagi. Berapa total apel sekarang?', '4', '5', '6', '7', '5'),
+	(7, 1, 'Jika kamu memiliki 5 permen dan memberikan 2 kepada temanmu, berapa permen yang tersisa?', '2', '3', '4', '5', '3'),
+	(8, 1, 'Hitunglah: 4 + 3 = ?', '6', '7', '8', '9', '7'),
+	(9, 1, 'Ada 6 burung di pohon. 2 burung terbang pergi. Berapa burung yang tersisa?', '3', '4', '5', '6', '4'),
+	(10, 1, 'Jika kamu memiliki 8 kelereng dan kehilangan 3, berapa kelereng yang tersisa?', '4', '5', '6', '7', '5'),
+	(11, 2, 'Bacalah kalimat ini: "Ibu pergi ke pasar." Siapa yang pergi ke pasar?', 'Ayah', 'Ibu', 'Kakak', 'Adik', 'Ibu'),
+	(12, 2, 'Apa huruf pertama dari kata "makan"?', 'A', 'M', 'K', 'N', 'M'),
+	(13, 2, 'Lengkapi kalimat ini: "Ani sedang membaca ___."', 'buku', 'mobil', 'pensil', 'meja', 'buku'),
+	(14, 2, 'Apa lawan kata dari "besar"?', 'panjang', 'kecil', 'tinggi', 'pendek', 'kecil'),
+	(15, 2, 'Tuliskan huruf vokal dalam bahasa Indonesia!', 'A, I, U, E, O', 'B, C, D, F, G', 'H, J, K, L, M', 'N, P, Q, R, S', 'A, I, U, E, O'),
+	(16, 3, 'Apa nama hewan yang memiliki belalai panjang?', 'Gajah', 'Harimau', 'Kucing', 'Anjing', 'Gajah'),
+	(17, 3, 'Apa warna daun yang sehat?', 'Merah', 'Hijau', 'Kuning', 'Coklat', 'Hijau'),
+	(18, 3, 'Apa nama benda yang digunakan untuk minum?', 'Piring', 'Gelas', 'Sendok', 'Garpu', 'Gelas'),
+	(19, 3, 'Apa nama hewan yang bisa terbang?', 'Kucing', 'Burung', 'Ikan', 'Kuda', 'Burung'),
+	(20, 3, 'Apa nama buah yang berwarna merah dan berbentuk bulat?', 'Pisang', 'Apel', 'Jeruk', 'Mangga', 'Apel'),
+	(21, 4, 'Apa nama tempat orang berbelanja?', 'Sekolah', 'Pasar', 'Rumah', 'Kantor', 'Pasar'),
+	(22, 4, 'Siapa yang menjaga keamanan di sekolah?', 'Guru', 'Satpam', 'Kepala Sekolah', 'Murid', 'Satpam'),
+	(23, 4, 'Apa nama alat transportasi yang beroda dua?', 'Mobil', 'Sepeda', 'Kereta', 'Pesawat', 'Sepeda'),
+	(24, 4, 'Apa nama tempat orang menabung uang?', 'Pasar', 'Bank', 'Sekolah', 'Rumah', 'Bank'),
+	(25, 4, 'Apa nama benda yang digunakan untuk menulis?', 'Pensil', 'Gelas', 'Sendok', 'Piring', 'Pensil'),
+	(26, 5, 'Apa warna kuning + biru?', 'Merah', 'Hijau', 'Ungu', 'Oranye', 'Hijau'),
+	(27, 5, 'Apa nama alat musik yang dipetik?', 'Drum', 'Gitar', 'Piano', 'Terompet', 'Gitar'),
+	(28, 5, 'Apa nama tarian tradisional dari Jawa?', 'Tari Saman', 'Tari Kecak', 'Tari Jaipong', 'Tari Serimpi', 'Tari Serimpi'),
+	(29, 5, 'Apa warna bendera Indonesia?', 'Merah dan Putih', 'Biru dan Kuning', 'Hijau dan Hitam', 'Merah dan Biru', 'Merah dan Putih'),
+	(30, 5, 'Apa nama alat untuk menggambar?', 'Pensil Warna', 'Sendok', 'Garpu', 'Piring', 'Pensil Warna'),
+	(31, 6, 'Siapa nabi pertama dalam Islam?', 'Nabi Musa', 'Nabi Isa', 'Nabi Adam', 'Nabi Muhammad', 'Nabi Adam'),
+	(32, 6, 'Apa nama kitab suci umat Islam?', 'Al-Quran', 'Alkitab', 'Tripitaka', 'Weda', 'Al-Quran'),
+	(33, 6, 'Apa nama tempat ibadah umat Islam?', 'Gereja', 'Pura', 'Masjid', 'Vihara', 'Masjid'),
+	(34, 6, 'Berapa jumlah rukun Islam?', '4', '5', '6', '7', '5'),
+	(35, 6, 'Apa nama malaikat yang menyampaikan wahyu?', 'Malaikat Mikail', 'Malaikat Jibril', 'Malaikat Israfil', 'Malaikat Izrail', 'Malaikat Jibril');
+
+-- Dumping structure for table freedb_quiz_deepseek.quiz_results
+DROP TABLE IF EXISTS `quiz_results`;
+CREATE TABLE IF NOT EXISTS `quiz_results` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `category_id` int NOT NULL,
+  `score` int NOT NULL,
+  `total_questions` int NOT NULL,
+  `time_elapsed` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `image` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table freedb_quiz_deepseek.quiz_results: ~11 rows (approximately)
+INSERT INTO `quiz_results` (`id`, `user_id`, `category_id`, `score`, `total_questions`, `time_elapsed`, `created_at`, `image`) VALUES
+	(1, 1, 1, 100, 2, 7, '2025-02-20 08:18:42', NULL),
+	(2, 1, 1, 100, 2, 141, '2025-02-20 08:32:01', NULL),
+	(3, 1, 1, 100, 2, 5, '2025-02-20 09:39:56', NULL),
+	(4, 1, 2, 0, 2, 8, '2025-02-10 10:27:12', NULL),
+	(5, 1, 1, 100, 2, 13, '2025-02-21 02:24:43', NULL),
+	(6, 1, 1, 50, 2, 12, '2025-02-21 09:07:22', NULL),
+	(7, 1, 2, 0, 2, 14, '2025-02-21 09:12:13', NULL),
+	(8, 1, 1, 100, 3, 18, '2025-02-24 07:55:43', NULL),
+	(9, 1, 1, 20, 5, 33, '2025-02-25 07:47:51', NULL),
+	(10, 1, 6, 0, 5, 61, '2025-02-26 06:14:49', NULL),
+	(11, 1, 6, 80, 5, 26, '2025-02-26 06:18:40', NULL);
+
+-- Dumping structure for table freedb_quiz_deepseek.users
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `kelas_id` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `address` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table freedb_quiz_deepseek.users: ~2 rows (approximately)
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `kelas_id`, `created_at`, `address`) VALUES
+	(1, 'user1 testing', '$2a$12$aXPL5bqC5aaqE0fgo6kou.nPak8mxntML7XOSKOLhvFc.6bUSTmYm', 'user@gmail.com', 1, '2025-02-20 16:20:40', 'di rumah 1'),
+	(2, 'user2', 'password2', 'user2@gmail.com', 2, '2025-02-20 16:20:56', 'di rumah 2');
+
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
