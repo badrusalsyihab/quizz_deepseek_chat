@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 
-export default function Category({ params }) {
+export default function Category() {
 
     const router = useRouter();
     const [categories, setCategories] = useState([]);
