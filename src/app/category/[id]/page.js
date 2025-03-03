@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import cn from 'classnames';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
@@ -9,6 +10,7 @@ export default function Category() {
     const [categories, setCategories] = useState([]);
     // const getUser = useState(JSON.parse(localStorage.getItem('user')));
     const [getUser, setUser] = useState(null);
+    const [quizResults, setQuizResults] = useState([]);
 
     useEffect(() => {
         // Cek apakah pengguna sudah login
@@ -37,10 +39,38 @@ export default function Category() {
         fetchCategories();
     }, [router, getUser]);
 
+    useEffect(() => {
+        if (!getUser) return;
+
+        const fetchQuizResults = async () => {
+            try {
+                const response = await fetch(`/api/results?user_id=${getUser.id}`);
+                const data = await response.json();
+                setQuizResults(data);
+            } catch (error) {
+                console.error('Error fetching quiz results:', error);
+            }
+        };
+
+        fetchQuizResults();
+    }, [router, getUser]);
+
     const handleStartQuiz = (categoryId) => {
         router.push(`/quiz/${categoryId}`);
     };
 
+    const hasHighScore = (categoryId) => {
+        const categoryResults = quizResults.filter(result => result.category_id === categoryId);
+        if (categoryResults.length === 0) return false;
+
+        // Sort results by date and get the latest one
+        const latestResult = categoryResults.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+        if (latestResult.score > 80) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-100 p-8">
@@ -97,6 +127,8 @@ export default function Category() {
                             <Image
                                 src={category.image}
                                 alt={category.name}
+                                width={300}
+                                height={300}
                                 className="w-full h-48 object-cover"
                             />
 
@@ -105,9 +137,11 @@ export default function Category() {
                                 <h2 className="text-xl font-semibold text-gray-800 mb-2">{category.name}</h2>
                                 <p className="text-gray-600">{category.description}</p>
                                 <p className="text-gray-600 mb-4">Total Soal: {category.total_questions}</p>
+
                                 <button
                                     onClick={() => handleStartQuiz(category.id)}
-                                    className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    disabled={Boolean(hasHighScore(category.id))}
+                                    className={cn("w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500", Boolean(hasHighScore(category.id)) && 'bg-gray-300 hover:bg-gray-600 cursor-not-allowed')}
                                 >
                                     Mulai Quiz
                                 </button>

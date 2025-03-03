@@ -45,7 +45,6 @@ export default function Dashboard() {
                 try {
                     const response = await fetch(`/api/results?user_id=${getUser.id}&limit=5`);
                     const data = await response.json();
-                    console.log('fetchResultWithLimit', data);
                     setResultWithLimit(data);
                 } catch (error) {
                     console.error('Error fetching questions:', error);
