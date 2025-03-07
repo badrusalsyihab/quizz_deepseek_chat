@@ -115,7 +115,7 @@ export default function Dashboard() {
 
     return (
         <>
-            <div className="container mx-auto p-6">
+            <div className="container mx-auto p-6 bg-gray-100">
                 <div className="text-3xl font-bold text-gray-800">Hi {getUser ? getUser?.username : ''}, Selamat datang di QuizApps</div>
                 {/* <div className="text-xl font-bold text-gray-800 mb-8">Kamu sekrang berada di {getUser.kelas_name}</div> */}
                 <div className="text-md font-bold text-gray-800 mb-8">Ayo mulia dan ambil sertifikat mu sekarang dengan menjawab soal quizz</div>
