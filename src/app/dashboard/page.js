@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import ButtonLogout from "@/components/ButtonLogout";
 
 export default function Dashboard() {
     const router = useRouter();
@@ -115,6 +115,16 @@ export default function Dashboard() {
 
     return (
         <>
+        <nav className="bg-blue-600 p-4 text-white">
+          <div className="container mx-auto flex items-center">
+            <div className="flex-1">
+              <h1 className="text-2xl font-bold">QuizApps</h1>
+            </div>
+            <div className="flex space-x-4">
+              <ButtonLogout />
+            </div>
+          </div>
+        </nav>
             <div className="container mx-auto p-6 bg-gray-100">
                 <div className="text-3xl font-bold text-gray-800">Hi {getUser ? getUser?.username : ''}, Selamat datang di QuizApps</div>
                 {/* <div className="text-xl font-bold text-gray-800 mb-8">Kamu sekrang berada di {getUser.kelas_name}</div> */}

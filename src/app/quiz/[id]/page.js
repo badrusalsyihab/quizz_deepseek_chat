@@ -101,7 +101,9 @@ export default function Quiz({ params }) {
     }
 
     return (
+        
         <div className="min-h-screen bg-gray-100 p-8">
+           
             <div className="container mx-auto">
                 {/* Breadcrumb */}
                 <nav className="flex mb-6" aria-label="Breadcrumb">
@@ -171,7 +173,7 @@ export default function Quiz({ params }) {
                                 <button
                                     key={index}
                                     onClick={() => handleAnswer(option)}
-                                    className="w-full bg-gray-100 text-gray-800 p-4 rounded-lg hover:bg-blue-500 hover:text-white transition-colors duration-300 text-left"
+                                    className="w-full bg-gray-100 text-gray-800 p-4 rounded-lg hover:bg-blue-500 hover:text-white transition-colors duration-300 text-left md:focus:bg-blue-500 md:focus:text-white"
                                 >
                                     {option}
                                 </button>

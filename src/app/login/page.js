@@ -1,16 +1,18 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import cn from 'classnames';
 
 export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const router = useRouter();
+    const [isDisableButton, setDisableButton] = useState(false);
 
     const handleLogin = async (e) => {
         e.preventDefault();
-
+        setDisableButton(true);
         try {
             // Kirim data login ke API
             const response = await fetch('/api/login', {
@@ -30,6 +32,7 @@ export default function Login() {
             } else {
                 setError(data.error || 'Login failed');
             }
+            setDisableButton(false);
         } catch (error) {
             console.error('Error during login:', error);
             setError('Failed to connect to the server');
@@ -78,9 +81,11 @@ export default function Login() {
                     <div>
                         <button
                             type="submit"
-                            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            disabled={isDisableButton}
+                            className={cn("w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500", isDisableButton && "bg-gray-500 focus:ring-gray-500" )}  
                         >
-                            Login
+                        
+                            {isDisableButton ? 'Loading..' : 'Login'}
                         </button>
                     </div>
                 </form>
