@@ -1,22 +1,10 @@
 // app/api/results/route.js
-import { createPool } from 'mysql2/promise';
 import { getDBConnection } from '@/lib/db'
 
 export async function POST(request) {
     let connection;
     // Ambil data dari body request
     const { userId, categoryId, score, totalQuestions, timeElapsed } = await request.json();
-
-    // Buat koneksi ke MySQL
-    // const pool = createPool({
-    //     host: '30vog.h.filess.io',
-    //     user: 'quizdeepseek_entirepet', // Ganti dengan username MySQL Anda
-    //     password: '5c7c25afb5d36e860bde166fe4d49d7893879f31', // Ganti dengan password MySQL Anda
-    //     database: 'quizdeepseek_entirepet', // Ganti dengan nama database Anda
-    //     waitForConnections: true,
-    //     connectionLimit: 10,
-    //     queueLimit: 0,
-    // });
 
     try {
         connection = await getDBConnection();
@@ -49,19 +37,6 @@ export async function GET(request) {
     const single = searchParams.get('single');
     const group = searchParams.get('group');
     const limit = searchParams.get('limit');
-
-    // console.log('user_id', user_id, 'single', single, 'group', group);
-
-    // Buat koneksi ke MySQL
-    // const pool = createPool({
-    //     host: '30vog.h.filess.io',
-    //     user: 'quizdeepseek_entirepet', // Ganti dengan username MySQL Anda
-    //     password: '5c7c25afb5d36e860bde166fe4d49d7893879f31', // Ganti dengan password MySQL Anda
-    //     database: 'quizdeepseek_entirepet', // Ganti dengan nama database Anda
-    //     waitForConnections: true,
-    //     connectionLimit: 10,
-    //     queueLimit: 0,
-    // });
 
     try {
         connection = await getDBConnection();

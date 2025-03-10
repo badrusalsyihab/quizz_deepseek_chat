@@ -1,5 +1,4 @@
 // app/api/login/route.js
-import { createPool } from 'mysql2/promise';
 import bcrypt from 'bcryptjs';
 import { getDBConnection } from '@/lib/db'
 
@@ -7,17 +6,6 @@ export async function POST(request) {
     // Ambil data dari body request
     let connection;
     const { username, password } = await request.json();
-
-    // Buat koneksi ke MySQL
-    // const pool = createPool({
-    //     host: '30vog.h.filess.io',
-    //     user: 'quizdeepseek_entirepet', // Ganti dengan username MySQL Anda
-    //     password: '5c7c25afb5d36e860bde166fe4d49d7893879f31', // Ganti dengan password MySQL Anda
-    //     database: 'quizdeepseek_entirepet', // Ganti dengan nama database Anda
-    //     waitForConnections: true,
-    //     connectionLimit: 10,
-    //     queueLimit: 0,
-    // });
 
     try {
         connection = await getDBConnection();

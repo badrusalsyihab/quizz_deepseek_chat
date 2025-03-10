@@ -1,5 +1,4 @@
 // app/api/questions/route.js
-import { createPool } from 'mysql2/promise';
 import { getDBConnection } from '@/lib/db'
 
 export async function GET(request) {
@@ -7,17 +6,6 @@ export async function GET(request) {
     let connection;
     const { searchParams } = new URL(request.url);
     const categoryId = searchParams.get('category_id');
-
-    // Buat koneksi ke MySQL
-    // const pool = createPool({
-    //     host: '30vog.h.filess.io',
-    //     user: 'quizdeepseek_entirepet', // Ganti dengan username MySQL Anda
-    //     password: '5c7c25afb5d36e860bde166fe4d49d7893879f31', // Ganti dengan password MySQL Anda
-    //     database: 'quizdeepseek_entirepet', // Ganti dengan nama database Anda
-    //     waitForConnections: true,
-    //     connectionLimit: 10,
-    //     queueLimit: 0,
-    // });
 
     try {
         // Periksa apakah categoryId ada
