@@ -34,8 +34,6 @@ export async function GET(request) {
     // Ambil data dari body request
     const { searchParams } = new URL(request.url);
     const user_id = searchParams.get('user_id');
-    const single = searchParams.get('single');
-    const group = searchParams.get('group');
     const limit = searchParams.get('limit');
 
     try {
