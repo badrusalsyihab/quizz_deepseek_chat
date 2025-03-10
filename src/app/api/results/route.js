@@ -1,24 +1,27 @@
 // app/api/results/route.js
 import { createPool } from 'mysql2/promise';
+import { getDBConnection } from '@/lib/db'
 
 export async function POST(request) {
+    let connection;
     // Ambil data dari body request
     const { userId, categoryId, score, totalQuestions, timeElapsed } = await request.json();
 
     // Buat koneksi ke MySQL
-    const pool = createPool({
-        host: '30vog.h.filess.io',
-        user: 'quizdeepseek_entirepet', // Ganti dengan username MySQL Anda
-        password: '5c7c25afb5d36e860bde166fe4d49d7893879f31', // Ganti dengan password MySQL Anda
-        database: 'quizdeepseek_entirepet', // Ganti dengan nama database Anda
-        waitForConnections: true,
-        connectionLimit: 10,
-        queueLimit: 0,
-    });
+    // const pool = createPool({
+    //     host: '30vog.h.filess.io',
+    //     user: 'quizdeepseek_entirepet', // Ganti dengan username MySQL Anda
+    //     password: '5c7c25afb5d36e860bde166fe4d49d7893879f31', // Ganti dengan password MySQL Anda
+    //     database: 'quizdeepseek_entirepet', // Ganti dengan nama database Anda
+    //     waitForConnections: true,
+    //     connectionLimit: 10,
+    //     queueLimit: 0,
+    // });
 
     try {
+        connection = await getDBConnection();
         // Simpan data hasil quiz ke database
-        await pool.query(
+        await connection.query(
             'INSERT INTO quiz_results (user_id, category_id, score, total_questions, time_elapsed) VALUES (?, ?, ?, ?, ?)',
             [userId, categoryId, score, totalQuestions, timeElapsed]
         );
@@ -32,13 +35,14 @@ export async function POST(request) {
             headers: { 'Content-Type': 'application/json' },
         });
     } finally {
-        await pool.end(); // Tutup koneksi
+        if (connection) connection.release()
     }
 }
 
 
 
 export async function GET(request) {
+    let connection;
     // Ambil data dari body request
     const { searchParams } = new URL(request.url);
     const user_id = searchParams.get('user_id');
@@ -46,23 +50,24 @@ export async function GET(request) {
     const group = searchParams.get('group');
     const limit = searchParams.get('limit');
 
-    console.log('user_id', user_id, 'single', single, 'group', group);
+    // console.log('user_id', user_id, 'single', single, 'group', group);
 
     // Buat koneksi ke MySQL
-    const pool = createPool({
-        host: '30vog.h.filess.io',
-        user: 'quizdeepseek_entirepet', // Ganti dengan username MySQL Anda
-        password: '5c7c25afb5d36e860bde166fe4d49d7893879f31', // Ganti dengan password MySQL Anda
-        database: 'quizdeepseek_entirepet', // Ganti dengan nama database Anda
-        waitForConnections: true,
-        connectionLimit: 10,
-        queueLimit: 0,
-    });
+    // const pool = createPool({
+    //     host: '30vog.h.filess.io',
+    //     user: 'quizdeepseek_entirepet', // Ganti dengan username MySQL Anda
+    //     password: '5c7c25afb5d36e860bde166fe4d49d7893879f31', // Ganti dengan password MySQL Anda
+    //     database: 'quizdeepseek_entirepet', // Ganti dengan nama database Anda
+    //     waitForConnections: true,
+    //     connectionLimit: 10,
+    //     queueLimit: 0,
+    // });
 
     try {
+        connection = await getDBConnection();
         // Simpan data hasil quiz ke database
         if (user_id && !limit) {
-            const [rows] = await pool.query(`
+            const [rows] = await connection.query(`
             SELECT qr.*, c.name as category_name, c.description as category_description
             FROM quiz_results qr
             LEFT JOIN categories c ON qr.category_id = c.id
@@ -72,7 +77,7 @@ export async function GET(request) {
                 headers: { 'Content-Type': 'application/json' },
             });
         } else if (user_id && limit) {
-            const [rows] = await pool.query(`
+            const [rows] = await connection.query(`
                 SELECT qr.*, c.name as category_name, c.description as category_description
                 FROM quiz_results qr
                 LEFT JOIN categories c ON qr.category_id = c.id
@@ -86,7 +91,7 @@ export async function GET(request) {
             });
         }
         else {
-            const [rows] = await pool.query('SELECT * FROM quiz_results');
+            const [rows] = await connection.query('SELECT * FROM quiz_results');
             return new Response(JSON.stringify(rows), {
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -99,6 +104,6 @@ export async function GET(request) {
             headers: { 'Content-Type': 'application/json' },
         });
     } finally {
-        await pool.end(); // Tutup koneksi
+        if (connection) connection.release()
     }
 }

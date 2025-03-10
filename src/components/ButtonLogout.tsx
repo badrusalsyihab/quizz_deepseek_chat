@@ -6,6 +6,7 @@ const ButtonLogout: React.FC = () => {
     const handleLogout = () => {
         if (typeof window !== "undefined") {
             localStorage.removeItem("token");
+            localStorage.removeItem("user");
             window.location.href = "/login";
         }
     };

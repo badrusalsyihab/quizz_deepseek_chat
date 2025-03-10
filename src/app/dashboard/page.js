@@ -115,74 +115,72 @@ export default function Dashboard() {
 
     return (
         <>
-        <nav className="bg-blue-600 p-4 text-white">
-          <div className="container mx-auto flex items-center">
-            <div className="flex-1">
-              <h1 className="text-2xl font-bold">QuizApps</h1>
-            </div>
-            <div className="flex space-x-4">
-              <ButtonLogout />
-            </div>
-          </div>
-        </nav>
-            <div className="container mx-auto p-6 bg-gray-100">
-                <div className="text-3xl font-bold text-gray-800">Hi {getUser ? getUser?.username : ''}, Selamat datang di QuizApps</div>
-                {/* <div className="text-xl font-bold text-gray-800 mb-8">Kamu sekrang berada di {getUser.kelas_name}</div> */}
-                <div className="text-md font-bold text-gray-800 mb-8">Ayo mulia dan ambil sertifikat mu sekarang dengan menjawab soal quizz</div>
-
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-
-                    <div className="bg-white cursor-pointer p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center" onClick={() => router.push(`/category/${getUser.kelas_id}`)} >
-                        <h3 className="text-xl font-semibold text-gray-800 mb-2">Total Quizzes</h3>
-                        <p className="text-4xl font-bold text-blue-600">{category.length}</p>
-                        <div className="mt-4">
-                            <button
-                                onClick={() => router.push(`/category/${getUser ? getUser?.kelas_id : ''}`)}
-                                className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            >
-                                Pilih Quiz
-                            </button>
-                        </div>
-
-                        {/* <div className="mt-4">
-                            <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-red-600" onClick={() => router.push(`/questions`)} >Buat pertanyaan</button>
-                        </div> */}
-
+            <nav className="bg-blue-600 p-4 text-white">
+                <div className="container mx-auto flex items-center">
+                    <div className="flex-1">
+                        <h1 className="text-2xl font-bold">QuizApps</h1>
                     </div>
-
-
-                    <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center">
-                        <h3 className="text-xl font-semibold text-gray-800 mb-2">Completed Quizzes</h3>
-                        <p className="text-4xl font-bold text-green-600">{groupedResultsCount}</p>
-                    </div>
-
-
-                    <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center">
-                        <h3 className="text-xl font-semibold text-gray-800 mb-2">Average Score</h3>
-                        <p className="text-4xl font-bold text-purple-600">{averageScore}%</p>
+                    <div className="flex space-x-4">
+                        <ButtonLogout />
                     </div>
                 </div>
+            </nav>
+            <div className="bg-gray-100">
+
+                <div className="container mx-auto p-6 bg-gray-100">
+                    <div className="text-3xl font-bold text-gray-800">Hi {getUser ? getUser?.username : ''}, Selamat datang di QuizApps</div>
+                    {/* <div className="text-xl font-bold text-gray-800 mb-8">Kamu sekrang berada di {getUser.kelas_name}</div> */}
+                    <div className="text-md font-bold text-gray-800 mb-8">Ayo mulia dan ambil sertifikat mu sekarang dengan menjawab soal quizz</div>
 
 
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h3 className="text-2xl font-bold text-gray-800 mb-6">Recent Activity</h3>
-                    <ul className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 
-                        {isResultWithLimit.map((item) => {
-                            const daysAgo = calculateDaysAgo(item.created_at);
-                            return (
-                                <li key={item.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                                    <div>
-                                        <p className="text-lg font-semibold text-gray-800">Quiz: {item.category_name}</p>
-                                        <p className="text-sm text-gray-600">Score : {item.score}%</p>
-                                    </div>
-                                    <span className="text-sm text-gray-500">{daysAgo === 0 ? '' : daysAgo} {daysAgo === 0 ? 'Hari ini' : 'days ago'}</span>
-                                </li>
-                            );
-                        })}
+                        <div className="bg-white cursor-pointer p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center" onClick={() => router.push(`/category/${getUser.kelas_id}`)} >
+                            <h3 className="text-xl font-semibold text-gray-800 mb-2">Total Quizzes</h3>
+                            <p className="text-4xl font-bold text-blue-600">{category.length}</p>
+                            <div className="mt-4">
+                                <button
+                                    onClick={() => router.push(`/category/${getUser ? getUser?.kelas_id : ''}`)}
+                                    className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                    Pilih Quiz
+                                </button>
+                            </div>
+                        </div>
 
-                    </ul>
+
+                        <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center">
+                            <h3 className="text-xl font-semibold text-gray-800 mb-2">Completed Quizzes</h3>
+                            <p className="text-4xl font-bold text-green-600">{groupedResultsCount}</p>
+                        </div>
+
+
+                        <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center">
+                            <h3 className="text-xl font-semibold text-gray-800 mb-2">Average Score</h3>
+                            <p className="text-4xl font-bold text-purple-600">{averageScore}%</p>
+                        </div>
+                    </div>
+
+
+                    <div className="bg-white p-6 rounded-lg shadow-md">
+                        <h3 className="text-2xl font-bold text-gray-800 mb-6">Recent Activity</h3>
+                        <ul className="space-y-4">
+
+                            {isResultWithLimit.map((item) => {
+                                const daysAgo = calculateDaysAgo(item.created_at);
+                                return (
+                                    <li key={item.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                        <div>
+                                            <p className="text-lg font-semibold text-gray-800">Quiz: {item.category_name}</p>
+                                            <p className="text-sm text-gray-600">Score : {item.score}%</p>
+                                        </div>
+                                        <span className="text-sm text-gray-500">{daysAgo === 0 ? '' : daysAgo} {daysAgo === 0 ? 'Hari ini' : 'days ago'}</span>
+                                    </li>
+                                );
+                            })}
+
+                        </ul>
+                    </div>
                 </div>
             </div>
         </>
