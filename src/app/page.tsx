@@ -35,7 +35,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row items-center justify-between">
           {/* Text Section */}
           <div className="md:w-1/2 text-center md:text-left mb-8 md:mb-0">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-black-500">
               Welcome to <span className="text-blue-500">QuizApp</span>
             </h1>
             <p className="text-lg text-gray-700 mb-6">
@@ -65,8 +65,8 @@ export default function Home() {
       {/* Features Section */}
       <div className="bg-white py-12">
         <div className="container mx-auto px-8">
-          <h2 className="text-3xl font-bold text-center mb-8">Why Choose QuizApp?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <h2 className="text-3xl font-bold text-center mb-8 text-black-500">Why Choose QuizApp?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-black-500">
             {/* Feature 1 */}
             <div className="bg-gray-100 p-6 rounded-lg text-center">
               <h3 className="text-xl font-semibold mb-4">Interactive Quizzes</h3>
