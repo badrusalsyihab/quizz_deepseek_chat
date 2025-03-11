@@ -35,8 +35,8 @@ export default function Home() {
         <div className="flex flex-col md:flex-row items-center justify-between">
           {/* Text Section */}
           <div className="md:w-1/2 text-center md:text-left mb-8 md:mb-0">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-orange-50">
-              Welcome to2 <span className="text-blue-500">QuizApp</span>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-black-500">
+              Welcome to <span className="text-blue-500">QuizApp</span>
             </h1>
             <p className="text-lg text-gray-700 mb-6">
               Test your knowledge and challenge yourself with our fun and interactive quizzes. Login to get started!
