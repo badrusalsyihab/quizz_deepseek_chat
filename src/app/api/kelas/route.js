@@ -21,6 +21,6 @@ export async function GET() {
         });
     } finally {
         //await connection.end(); // Tutup koneksi
-        if (connection) connection.release()
+        connection.end();
     }
 }

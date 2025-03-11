@@ -24,3 +24,4 @@ export async function getDBConnection() {
     const pool = createDBConnection()
     return await pool.getConnection()
 }
+

@@ -17,7 +17,7 @@ export async function POST(request) {
             LEFT JOIN kelas k ON u.kelas_id = k.id
             WHERE u.email = ?
         `, [username]);
-        console.log(rows);
+
         if (rows.length === 0) {
             return new Response(JSON.stringify({ error: 'User not found' }), {
                 status: 404,
@@ -50,6 +50,6 @@ export async function POST(request) {
         });
     } finally {
         // await connection.end(); // Tutup koneksi
-        if (connection) connection.release()
+        connection.end();
     }
 }

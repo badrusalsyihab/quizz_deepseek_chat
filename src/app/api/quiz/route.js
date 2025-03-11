@@ -36,7 +36,7 @@ export async function GET(request) {
         });
     } finally {
         // await connection.end(); // Tutup koneksi
-        if (connection) connection.release()
+        connection.end();
     }
 }
 
