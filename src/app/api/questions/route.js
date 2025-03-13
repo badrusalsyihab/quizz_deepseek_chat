@@ -22,6 +22,8 @@ export async function POST(request) {
             headers: { 'Content-Type': 'application/json' },
         });
     } finally {
-        connection.end();
+        if (connection) {
+            await connection.release();
+        }
     }
 }

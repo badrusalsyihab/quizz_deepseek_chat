@@ -35,8 +35,10 @@ export async function GET(request) {
             headers: { 'Content-Type': 'application/json' },
         });
     } finally {
-        // await connection.end(); // Tutup koneksi
-        connection.end();
+        // await await connection.release();; // Tutup koneksi
+        if (connection) {
+            await connection.release();
+        }
     }
 }
 

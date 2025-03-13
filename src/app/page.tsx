@@ -21,12 +21,12 @@ export default function Home() {
       <nav className="bg-blue-500 p-4 text-white">
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-xl font-bold">QuizApp</h1>
-          <button
+          {/* <button
             onClick={() => router.push('/login')}
             className="bg-green-500 p-2 rounded hover:bg-green-600"
           >
             Login
-          </button>
+          </button> */}
         </div>
       </nav>
 

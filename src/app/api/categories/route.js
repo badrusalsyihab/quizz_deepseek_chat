@@ -48,6 +48,8 @@ export async function GET(request) {
         });
     } finally {
         // await pool.end(); // Tutup koneksi
-        connection.end();
+        if (connection) {
+            await connection.release();
+        }
     }
 }

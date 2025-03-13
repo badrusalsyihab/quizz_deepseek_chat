@@ -23,7 +23,9 @@ export async function POST(request) {
             headers: { 'Content-Type': 'application/json' },
         });
     } finally {
-        connection.end();
+        if (connection) {
+            await connection.release();
+        }
     }
 }
 
@@ -77,7 +79,8 @@ export async function GET(request) {
             headers: { 'Content-Type': 'application/json' },
         });
     } finally {
-        connection.end();
-        //if (connection) connection.release()
+        if (connection) {
+            await connection.release();
+        }
     }
 }

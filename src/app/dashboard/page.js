@@ -84,7 +84,7 @@ export default function Dashboard() {
         };
 
         fetchKelas();
-    }, [router]);
+    }, [router, getUser]);
 
     const calculateDaysAgo = (date) => {
         const currentDate = new Date();
@@ -95,7 +95,18 @@ export default function Dashboard() {
     };
 
     // Group results by category_id
-    const groupedResults = isResult.reduce((acc, item) => {
+    // const groupedResults = Array.isArray(isResult) ? isResult.reduce((acc, item) => {
+    //     const categoryId = item.category_id;
+    //     if (!acc[categoryId]) {
+    //         acc[categoryId] = {
+    //             category_name: item.category_name,
+    //             results: [],
+    //         };
+    //     }
+    //     acc[categoryId].results.push(item);
+    //     return acc;
+    // }, {});
+    const groupedResults = Array.isArray(isResult) ? isResult.reduce((acc, item) => {
         const categoryId = item.category_id;
         if (!acc[categoryId]) {
             acc[categoryId] = {
@@ -105,10 +116,11 @@ export default function Dashboard() {
         }
         acc[categoryId].results.push(item);
         return acc;
-    }, {});
+    }, {}) : {};
 
     // Calculate average score
-    const totalScore = isResult.reduce((acc, item) => acc + item.score, 0);
+    //  const totalScore = isResult.reduce((acc, item) => acc + item.score, 0);
+    const totalScore = Array.isArray(isResult) ? isResult.reduce((acc, item) => acc + item.score, 0) : 0;
     const averageScore = isResult.length ? (totalScore / isResult.length).toFixed(2) : 0;
 
     const groupedResultsCount = Object.keys(groupedResults).length ? Object.keys(groupedResults).length : 0;
@@ -127,7 +139,7 @@ export default function Dashboard() {
             </nav>
             <div className="bg-gray-100">
 
-                <div className="container mx-auto p-6 bg-gray-100">
+                <div className="container mx-auto p-6">
                     <div className="text-3xl font-bold text-gray-800">Hi {getUser ? getUser?.username : ''}, Selamat datang di QuizApps</div>
                     {/* <div className="text-xl font-bold text-gray-800 mb-8">Kamu sekrang berada di {getUser.kelas_name}</div> */}
                     <div className="text-md font-bold text-gray-800 mb-8">Ayo mulia dan ambil sertifikat mu sekarang dengan menjawab soal quizz</div>
@@ -166,7 +178,7 @@ export default function Dashboard() {
                         <h3 className="text-2xl font-bold text-gray-800 mb-6">Recent Activity</h3>
                         <ul className="space-y-4">
 
-                            {isResultWithLimit.map((item) => {
+                            {/* {isResultWithLimit.map((item) => {
                                 const daysAgo = calculateDaysAgo(item.created_at);
                                 return (
                                     <li key={item.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
@@ -175,6 +187,19 @@ export default function Dashboard() {
                                             <p className="text-sm text-gray-600">Score : {item.score}%</p>
                                         </div>
                                         <span className="text-sm text-gray-500">{daysAgo === 0 ? '' : daysAgo} {daysAgo === 0 ? 'Hari ini' : 'days ago'}</span>
+                                    </li>
+                                );
+                            })} */}
+
+                            {Array.isArray(isResultWithLimit) && isResultWithLimit.map((item) => {
+                                const daysAgo = calculateDaysAgo(item.created_at);
+                                return (
+                                    <li key={item.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                        <div>
+                                            <p className="text-lg font-semibold text-gray-800">Quiz: {item.category_name}</p>
+                                            <p className="text-sm text-gray-600">Score : {item.score}%</p>
+                                        </div>
+                                        <span className="text-sm text-gray-500">{daysAgo === 0 ? 'Hari ini' : `${daysAgo} days ago`}</span>
                                     </li>
                                 );
                             })}
