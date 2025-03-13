@@ -11,6 +11,18 @@ export default function Quiz({ params }) {
     const [timeElapsed, setTimeElapsed] = useState(0);
     const [isQuizActive, setIsQuizActive] = useState(true);
     const [questions, setQuestions] = useState([]);
+    const [getUser, setUser] = useState(null);
+
+
+    useEffect(() => {
+        // Cek apakah pengguna sudah login
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            router.push('/login'); // Redirect ke login jika belum login
+        } else {
+            setUser(user);
+        }
+    }, [router]);
 
     // Ambil data pertanyaan dari API
     useEffect(() => {
@@ -69,7 +81,7 @@ export default function Quiz({ params }) {
 
         // Simpan hasil quiz ke database
         try {
-            const userId = 1; // Ganti dengan ID pengguna yang sesungguhnya (jika ada sistem login)
+            const userId = getUser ? getUser?.id : 0; // Ganti dengan ID pengguna yang sesungguhnya (jika ada sistem login)
             const response = await fetch('/api/results', {
                 method: 'POST',
                 headers: {
@@ -101,9 +113,9 @@ export default function Quiz({ params }) {
     }
 
     return (
-        
+
         <div className="min-h-screen bg-gray-100 p-8">
-           
+
             <div className="container mx-auto">
                 {/* Breadcrumb */}
                 <nav className="flex mb-6" aria-label="Breadcrumb">

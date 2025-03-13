@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
+
 export default function Category() {
 
     const router = useRouter();
@@ -72,23 +73,23 @@ export default function Category() {
         }
     };
 
+    const allScoresAbove80 = () => {
+        // Check if there are results for every category
+        const categoryIds = categories.map(category => category.id);
+        const resultsByCategory = categoryIds.map(categoryId => {
+            const categoryResults = quizResults.filter(result => result.category_id === categoryId);
+            if (categoryResults.length === 0) return false;
 
-    const hasHighAverageScore = () => {
-        const categoryScores = quizResults.reduce((acc, result) => {
-            const { category_id, score } = result;
-            if (!acc[category_id]) {
-                acc[category_id] = { totalScore: 0, count: 0 };
-            }
-            acc[category_id].totalScore += score;
-            acc[category_id].count += 1;
-            return acc;
-        }, {});
+            // Sort results by date and get the latest one
+            const latestResult = categoryResults.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+            return latestResult.score > 80;
+        });
 
-        const averageScores = Object.values(categoryScores).map(({ totalScore, count }) => totalScore / count);
-        return averageScores.some(avgScore => avgScore > 80);
+        // Check if all categories have scores above 80
+        return resultsByCategory.every(result => result === true);
     };
 
-
+    console.log('allScoresAbove80', allScoresAbove80());
     return (
         <div className="min-h-screen bg-gray-100 p-8">
             <div className="container mx-auto">
@@ -132,13 +133,16 @@ export default function Category() {
                 </nav>
 
                 {/* <h1 className="text-3xl font-bold text-center text-blue-500 mb-8">Silahkan pilih soal yang akan kamu ambil</h1> */}
-                <div className="mb-5">
-                    <button
-                        onClick={() => router.push(`/dashboard`)}
-                        className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        Download Sertifikat
-                    </button>
-                </div>
+                {/* Show Download Sertifikat button if all scores are above 80 */}
+                {allScoresAbove80() && (
+                    <div className="mb-5">
+                        <button
+                            onClick={() => router.push(`/dashboard`)}
+                            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            Download Sertifikat
+                        </button>
+                    </div>
+                )}
                 {/* Grid untuk kategori */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {categories.map((category) => (
