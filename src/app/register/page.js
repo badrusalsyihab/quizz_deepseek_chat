@@ -54,7 +54,8 @@ export default function Register() {
             } else {
                 setError(data.error || 'Registration failed')
             }
-        } catch (err) {
+        } catch (error) {
+            console.error('Error submitting form:', error)
             setError('Failed to connect to server')
         }
     }

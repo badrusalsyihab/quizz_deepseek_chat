@@ -2,7 +2,7 @@ import { getDBConnection } from '@/lib/db'
 import bcrypt from 'bcryptjs'
 
 export async function POST(request) {
-    const { username, email, password, kelas } = await request.json()
+    const { username, email, password, kelas, address } = await request.json()
     const hashedPassword = await bcrypt.hash(password, 10)
 
     let connection
@@ -24,8 +24,8 @@ export async function POST(request) {
 
         // Create new user
         const [result] = await connection.query(
-            'INSERT INTO users (username, email, password, kelas_id) VALUES (?, ?, ?, ?)',
-            [username, email, hashedPassword]
+            'INSERT INTO users (username, email, password, kelas_id, address) VALUES (?, ?, ?, ?, ?)',
+            [username, email, hashedPassword, kelas, address]
         )
 
         return new Response(

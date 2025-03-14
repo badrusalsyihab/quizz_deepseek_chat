@@ -6,7 +6,7 @@ import ButtonLogout from "@/components/ButtonLogout";
 
 export default function Dashboard() {
     const router = useRouter();
-    const [_, setKelas] = useState([]);
+    const [, setKelas] = useState([]);
     const [category, setCategory] = useState([]);
     const [isResult, setResult] = useState([]);
     const [isResultWithLimit, setResultWithLimit] = useState([]);
