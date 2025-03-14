@@ -1,10 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { use } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import { HomeIcon, ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon, CheckIcon } from '@heroicons/react/24/solid';
 
-export default function Quiz({ params }) {
-    const { id } = use(params);
+export default function Quiz() {
+    const params = useParams();
+    const { id } = params;
     const router = useRouter();
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
@@ -12,7 +13,6 @@ export default function Quiz({ params }) {
     const [isQuizActive, setIsQuizActive] = useState(true);
     const [questions, setQuestions] = useState([]);
     const [getUser, setUser] = useState(null);
-
 
     useEffect(() => {
         // Cek apakah pengguna sudah login
@@ -49,14 +49,6 @@ export default function Quiz({ params }) {
         }
         return () => clearInterval(interval);
     }, [isQuizActive]);
-
-    // // Format waktu (HH:MM:SS)
-    // const formatTime = (time) => {
-    //     const hours = Math.floor(time / 3600);
-    //     const minutes = Math.floor((time % 3600) / 60);
-    //     const seconds = time % 60;
-    //     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    // };
 
     const handleAnswer = (option) => {
         if (option === questions[currentQuestion].answer) {
@@ -113,9 +105,7 @@ export default function Quiz({ params }) {
     }
 
     return (
-
         <div className="min-h-screen bg-gray-100 p-8">
-
             <div className="container mx-auto">
                 {/* Breadcrumb */}
                 <nav className="flex mb-6" aria-label="Breadcrumb">
@@ -125,31 +115,13 @@ export default function Quiz({ params }) {
                                 onClick={() => router.push('/dashboard')}
                                 className="text-gray-700 hover:text-blue-500 inline-flex items-center"
                             >
-                                <svg
-                                    className="w-5 h-5 mr-2"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                                </svg>
+                                <HomeIcon className="h-5 w-5 mr-2" />
                                 Dashboard
                             </button>
                         </li>
                         <li>
                             <div className="flex items-center">
-                                <svg
-                                    className="w-6 h-6 text-gray-400"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
+                                <ArrowRightIcon className="h-5 w-5 text-gray-400" />
                                 <span className="ml-1 text-gray-500 md:ml-2 capitalize">Quiz</span>
                             </div>
                         </li>
@@ -199,23 +171,26 @@ export default function Quiz({ params }) {
                     <button
                         onClick={handlePrevious}
                         disabled={currentQuestion === 0}
-                        className="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                     >
+                        <ChevronLeftIcon className="h-5 w-5 mr-2" />
                         Sebelumnya
                     </button>
                     {currentQuestion < questions.length - 1 ? (
                         <button
                             onClick={handleNext}
-                            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300"
+                            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300 flex items-center"
                         >
                             Selanjutnya
+                            <ChevronRightIcon className="h-5 w-5 ml-2" />
                         </button>
                     ) : (
                         <button
                             onClick={handleSubmit}
-                            className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors duration-300"
+                            className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors duration-300 flex items-center"
                         >
                             Selesai
+                            <CheckIcon className="h-5 w-5 ml-2" />
                         </button>
                     )}
                 </div>

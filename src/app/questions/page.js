@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { ClipboardIcon, PencilIcon, CheckCircleIcon, PlusIcon } from '@heroicons/react/24/solid';
 
 export default function QuestionForm() {
     const [formData, setFormData] = useState({
@@ -11,6 +12,24 @@ export default function QuestionForm() {
         option4: '',
         answer: '',
     });
+
+    const [categories, setCategories] = useState([]);
+    useEffect(() => {
+        // Fetch categories from the server
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch('/api/categories');
+                const data = await response.json();
+                setCategories(data);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    console.log(categories);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -56,24 +75,38 @@ export default function QuestionForm() {
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
-                <h1 className="text-2xl font-bold text-gray-800 mb-6">Add New Question</h1>
+                <h1 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <ClipboardIcon className="h-6 w-6 text-blue-500 mr-2" />
+                    Add New Question
+                </h1>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Category ID */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Category ID</label>
-                        <input
-                            type="number"
+                        <label className="block text-sm font-medium text-gray-700 flex items-center">
+                            <PencilIcon className="h-5 w-5 text-gray-500 mr-2" />
+                            Category
+                        </label>
+                        <select
                             name="category_id"
                             value={formData.category_id}
                             onChange={handleChange}
                             className="w-full p-2 border rounded-lg"
                             required
-                        />
+                        >
+                            <option value="">Select a category</option>
+                            {categories.map((category) => (
+                                <option key={category.id} value={category.id}>
+                                    {category.name}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     {/* Question */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Question</label>
+                        <label className="block text-sm font-medium text-gray-700 flex items-center">
+                            Question
+                        </label>
                         <textarea
                             name="question"
                             value={formData.question}
@@ -87,7 +120,9 @@ export default function QuestionForm() {
                     {/* Options */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Option 1</label>
+                            <label className="block text-sm font-medium text-gray-700 flex items-center">
+                                Option 1
+                            </label>
                             <input
                                 type="text"
                                 name="option1"
@@ -98,7 +133,9 @@ export default function QuestionForm() {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Option 2</label>
+                            <label className="block text-sm font-medium text-gray-700 flex items-center">
+                                Option 2
+                            </label>
                             <input
                                 type="text"
                                 name="option2"
@@ -109,7 +146,9 @@ export default function QuestionForm() {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Option 3</label>
+                            <label className="block text-sm font-medium text-gray-700 flex items-center">
+                                Option 3
+                            </label>
                             <input
                                 type="text"
                                 name="option3"
@@ -120,7 +159,9 @@ export default function QuestionForm() {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Option 4</label>
+                            <label className="block text-sm font-medium text-gray-700 flex items-center">
+                                Option 4
+                            </label>
                             <input
                                 type="text"
                                 name="option4"
@@ -134,7 +175,10 @@ export default function QuestionForm() {
 
                     {/* Correct Answer */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Correct Answer</label>
+                        <label className="block text-sm font-medium text-gray-700 flex items-center">
+                            <CheckCircleIcon className="h-5 w-5 text-gray-500 mr-2" />
+                            Correct Answer
+                        </label>
                         <select
                             name="answer"
                             value={formData.answer}
@@ -154,8 +198,9 @@ export default function QuestionForm() {
                     <div>
                         <button
                             type="submit"
-                            className="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+                            className="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 flex items-center justify-center"
                         >
+                            <PlusIcon className="h-5 w-5 mr-2" />
                             Add Question
                         </button>
                     </div>

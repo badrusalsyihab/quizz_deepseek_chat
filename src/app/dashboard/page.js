@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { AcademicCapIcon, CheckCircleIcon, ChartBarIcon, ClockIcon } from '@heroicons/react/24/solid';
 import ButtonLogout from "@/components/ButtonLogout";
 
 export default function Dashboard() {
     const router = useRouter();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, setKelas] = useState([]);
     const [category, setCategory] = useState([]);
     const [isResult, setResult] = useState([]);
@@ -13,10 +13,9 @@ export default function Dashboard() {
     const [getUser, setUser] = useState(null);
 
     useEffect(() => {
-        // Cek apakah pengguna sudah login
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user) {
-            router.push('/login'); // Redirect ke login jika belum login
+            router.push('/login');
         } else {
             setUser(user);
         }
@@ -30,14 +29,13 @@ export default function Dashboard() {
                     const data = await response.json();
                     setResult(data);
                 } catch (error) {
-                    console.error('Error fetching questions:', error);
+                    console.error('Error fetching results:', error);
                 }
             };
 
             fetchResult();
         }
     }, [router, getUser]);
-
 
     useEffect(() => {
         if (getUser) {
@@ -47,14 +45,13 @@ export default function Dashboard() {
                     const data = await response.json();
                     setResultWithLimit(data);
                 } catch (error) {
-                    console.error('Error fetching questions:', error);
+                    console.error('Error fetching results:', error);
                 }
             };
 
             fetchResultWithLimit();
         }
     }, [router, getUser]);
-
 
     useEffect(() => {
         if (!getUser) return;
@@ -65,7 +62,7 @@ export default function Dashboard() {
                 const data = await response.json();
                 setCategory(data);
             } catch (error) {
-                console.error('Error fetching questions:', error);
+                console.error('Error fetching categories:', error);
             }
         };
 
@@ -79,7 +76,7 @@ export default function Dashboard() {
                 const data = await response.json();
                 setKelas(data);
             } catch (error) {
-                console.error('Error fetching questions:', error);
+                console.error('Error fetching kelas:', error);
             }
         };
 
@@ -94,18 +91,6 @@ export default function Dashboard() {
         return differenceInDays;
     };
 
-    // Group results by category_id
-    // const groupedResults = Array.isArray(isResult) ? isResult.reduce((acc, item) => {
-    //     const categoryId = item.category_id;
-    //     if (!acc[categoryId]) {
-    //         acc[categoryId] = {
-    //             category_name: item.category_name,
-    //             results: [],
-    //         };
-    //     }
-    //     acc[categoryId].results.push(item);
-    //     return acc;
-    // }, {});
     const groupedResults = Array.isArray(isResult) ? isResult.reduce((acc, item) => {
         const categoryId = item.category_id;
         if (!acc[categoryId]) {
@@ -118,8 +103,6 @@ export default function Dashboard() {
         return acc;
     }, {}) : {};
 
-    // Calculate average score
-    //  const totalScore = isResult.reduce((acc, item) => acc + item.score, 0);
     const totalScore = Array.isArray(isResult) ? isResult.reduce((acc, item) => acc + item.score, 0) : 0;
     const averageScore = isResult.length ? (totalScore / isResult.length).toFixed(2) : 0;
 
@@ -138,16 +121,13 @@ export default function Dashboard() {
                 </div>
             </nav>
             <div className="bg-gray-100">
-
                 <div className="container mx-auto p-6">
                     <div className="text-3xl font-bold text-gray-800">Hi {getUser ? getUser?.username : ''}, Selamat datang di QuizApps</div>
-                    {/* <div className="text-xl font-bold text-gray-800 mb-8">Kamu sekrang berada di {getUser.kelas_name}</div> */}
-                    <div className="text-md font-bold text-gray-800 mb-8">Ayo mulia dan ambil sertifikat mu sekarang dengan menjawab soal quizz</div>
-
+                    <div className="text-md font-bold text-gray-800 mb-8">Ayo mulai dan ambil sertifikatmu sekarang dengan menjawab soal quiz</div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-
-                        <div className="bg-white cursor-pointer p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center" onClick={() => router.push(`/category/${getUser.kelas_id}`)} >
+                        <div className="bg-white cursor-pointer p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center" onClick={() => router.push(`/category/${getUser.kelas_id}`)}>
+                            <AcademicCapIcon className="h-12 w-12 text-blue-600 mx-auto mb-4" />
                             <h3 className="text-xl font-semibold text-gray-800 mb-2">Total Quizzes</h3>
                             <p className="text-4xl font-bold text-blue-600">{category.length}</p>
                             <div className="mt-4">
@@ -160,50 +140,37 @@ export default function Dashboard() {
                             </div>
                         </div>
 
-
                         <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center">
+                            <CheckCircleIcon className="h-12 w-12 text-green-600 mx-auto mb-4" />
                             <h3 className="text-xl font-semibold text-gray-800 mb-2">Completed Quizzes</h3>
                             <p className="text-4xl font-bold text-green-600">{groupedResultsCount}</p>
                         </div>
 
-
                         <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center">
+                            <ChartBarIcon className="h-12 w-12 text-purple-600 mx-auto mb-4" />
                             <h3 className="text-xl font-semibold text-gray-800 mb-2">Average Score</h3>
                             <p className="text-4xl font-bold text-purple-600">{averageScore}%</p>
                         </div>
                     </div>
 
-
                     <div className="bg-white p-6 rounded-lg shadow-md">
                         <h3 className="text-2xl font-bold text-gray-800 mb-6">Recent Activity</h3>
                         <ul className="space-y-4">
-
-                            {/* {isResultWithLimit.map((item) => {
-                                const daysAgo = calculateDaysAgo(item.created_at);
-                                return (
-                                    <li key={item.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                                        <div>
-                                            <p className="text-lg font-semibold text-gray-800">Quiz: {item.category_name}</p>
-                                            <p className="text-sm text-gray-600">Score : {item.score}%</p>
-                                        </div>
-                                        <span className="text-sm text-gray-500">{daysAgo === 0 ? '' : daysAgo} {daysAgo === 0 ? 'Hari ini' : 'days ago'}</span>
-                                    </li>
-                                );
-                            })} */}
-
                             {Array.isArray(isResultWithLimit) && isResultWithLimit.map((item) => {
                                 const daysAgo = calculateDaysAgo(item.created_at);
                                 return (
                                     <li key={item.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                                         <div>
                                             <p className="text-lg font-semibold text-gray-800">Quiz: {item.category_name}</p>
-                                            <p className="text-sm text-gray-600">Score : {item.score}%</p>
+                                            <p className="text-sm text-gray-600">Score: {item.score}%</p>
                                         </div>
-                                        <span className="text-sm text-gray-500">{daysAgo === 0 ? 'Hari ini' : `${daysAgo} days ago`}</span>
+                                        <span className="text-sm text-gray-500 flex items-center">
+                                            <ClockIcon className="h-5 w-5 mr-1" />
+                                            {daysAgo === 0 ? 'Hari ini' : `${daysAgo} days ago`}
+                                        </span>
                                     </li>
                                 );
                             })}
-
                         </ul>
                     </div>
                 </div>
